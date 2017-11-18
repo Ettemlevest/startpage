@@ -112,7 +112,6 @@
 
     handleQuery = (event, query) => {
       const key = event.keyCode || event.which
-      console.log(key)
 
       if (query != '') {
         let qList
@@ -127,7 +126,6 @@
               keyword = cmdPrefix + searchSources[i][0]
 
               // we found a search keyword
-              console.log(keyword, qList[0])
               if (keyword === qList[0]) {
                 ssi = i
                 searchbar.placeholder = searchSources[ssi][2]
