@@ -1,11 +1,10 @@
 # Startpage
 
-Minimalist startpage with additional searching capabilities
+Fully configurable minimalist startpage with additional searching capabilities
 
 ## Features
 
 - smarter search
 - webpage quicklinks
-- date & time information
+- date information
 - weather information
-- blur page on searchbar focus
