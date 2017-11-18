@@ -10,6 +10,13 @@
 <body>
   <div id="date"></div>
 
+  <!-- searchbar -->
+  <input type="search" id="searchbar" name="q" autocomplete="off" maxlength="1000" placeholder="Search"
+    onkeydown="handleQuery(event, this.value)"
+  >
+
+  <br>
+
   <!-- Weather from weatherwidget.io with inverse filter to make it white -->
   <div class="weather">
       <a class="weatherwidget-io" href="https://forecast7.com/en/60d1724d94/helsinki/" data-label_1="HELSINKI" data-label_2="WEATHER"
@@ -48,6 +55,21 @@
     // configurations
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     const dayNames = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"]
+    const ignoredKeys = [9,13,16,17,18,19,20,27,33,34,35,36,37,38,39,40,45,46,91,92,93,112,113,114,115,116,117,118,119,120,121,122,123,144,145]
+
+    // format: [keyword, search url, placeholder]
+    const cmdPrefix = '.' // prefix for commands
+    let   ssi = 0 // set default search provider
+    const searchSources = [
+      ['go', 'https://www.google.com/#q={Q}', 'Google'],
+      ['im', 'https://www.google.com/search?tbm=isch&q={Q}', 'Google Images'],
+      ['tr', 'https://translate.google.com/?source=osdd#auto/en/{Q}', 'Google Translate'],
+      ['bi', 'https://www.bing.com/search?q={Q}', 'Bing'],
+      ['ud', 'http://www.urbandictionary.com/define.php?term={Q}', 'Urban dictionary'],
+      ['wp', 'http://en.wikipedia.org/w/index.php?search={Q}', 'Wikipedia'],
+      ['gh', 'https://github.com/search?utf8=%E2%9C%93&q={Q}', 'Github']
+      ['yt', 'https://www.youtube.com/results?search_query={Q}', 'Youtube']
+    ]
 
     // format: [name, url]
     const quicklinks = [
@@ -59,6 +81,25 @@
     const $ = (id) => document.getElementById(id)
     const searchbar = $('searchbar')
 
+    initSearchBar = () => {
+      if (searchSources[ssi] !== undefined) {
+        searchbar.placeholder = searchSources[ssi][2]
+      } else {
+        ssi = 0;
+        searchbar.placeholder = "Do you know what you're doing?"
+        alert('Error: default search engine setting is invalid!')
+      }
+
+      document.addEventListener('keydown', (event) => {
+        if (ignoredKeys.includes(event.keyCode))
+          return
+
+        searchbar.focus()
+      })
+
+      searchbar.value = ''
+    }
+
     buildDate = () => {
       const today = new Date()
 
@@ -69,7 +110,67 @@
     buildHelp = () => {}
     buildQuicklinks = () => {}
 
+    handleQuery = (event, query) => {
+      const key = event.keyCode || event.which
+      console.log(key)
+
+      if (query != '') {
+        let qList
+
+        if (key === 32) {
+          qList = query.split(' ')
+
+          if (qList[0].charAt(0) === cmdPrefix) {
+            let keyword = ''
+
+            for (let i = 0; i < searchSources.length; i++) {
+              keyword = cmdPrefix + searchSources[i][0]
+
+              // we found a search keyword
+              console.log(keyword, qList[0])
+              if (keyword === qList[0]) {
+                ssi = i
+                searchbar.placeholder = searchSources[ssi][2]
+                searchbar.value = query.replace(keyword, '').trim()
+                event.preventDefault()
+                break
+              }
+            }
+          }
+        } else if (key === 13) {
+          qList = query.split(' ')
+
+          if (qList[0].charAt(0) === cmdPrefix) {
+            let keyword = ''
+
+            for (let i = 0; i < searchSources.length; i++) {
+              keyword = cmdPrefix + searchSources[i][0]
+
+              if (keyword === qList[0]) {
+                ssi = i
+                break
+              }
+            }
+
+            if (qList.length > 1) {
+              window.location = searchSources[ssi][1].replace('{Q}', encodeURIComponent(query.replace(keyword, ''))).trim()
+            } else {
+              searchbar.placeholder = searchSources[ssi][2]
+              searchbar.value = ''
+            }
+          } else {
+            window.location = searchSources[ssi][1].replace('{Q}', encodeURIComponent(query))
+          }
+        }
+      }
+
+      if (key === 27) {
+        searchbar.blur();
+      }
+    }
+
     // build up everything
+    initSearchBar()
     buildDate()
     buildHelp()
     buildQuicklinks()
