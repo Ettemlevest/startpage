@@ -13,3 +13,9 @@ Configurable minimalist startpage with additional searching capabilities. Everyt
 
 - design and quicklinks: Paloranta's [startpage-localstorage](https://github.com/paloranta/startpage-localstorage)
 - smart searchbar functionality: Trytanr's [Homepage v5](https://github.com/Trystanr/Homepages/tree/master/homepage-v5)
+
+## Screenshot
+
+![screenshot][screenshot]
+
+[screenshot]: https://github.com/Ettemlevest/startpage/blob/master/Screenshot.png "Screenshot"
