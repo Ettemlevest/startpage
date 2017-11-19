@@ -32,25 +32,28 @@
   <div class="grid">
     <div class="col">
         <h3>Learning</h3>
-        <ul id="fav-left">
+        <ul>
             <li><a href="https://www.coursera.org/learn/learning-how-to-learn">Learning How to Learn - Coursera</a></li>
         </ul>
     </div>
     <div class="col">
         <h3>Code</h3>
-        <ul id="fav-center">
+        <ul>
             <li><a href="https://cmdchallenge.com/">Commandline Challenge</a></li>
+        </ul>
+        <h3>Another category</h3>
+        <ul>
+          <li><a href="https://github.com">Github</a></li>
         </ul>
     </div>
     <div class="col">
         <h3>Everything else</h3>
-        <ul id="fav-right">
+        <ul>
             <li><a href="https://news.ycombinator.com/">Hacker News</a></li>
         </ul>
     </div>
   </div>
 
-  <!-- Code for date and time -->
   <script>
     // configurations
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -70,12 +73,6 @@
       ['gh', 'https://github.com/search?utf8=%E2%9C%93&q={Q}', 'Github']
       ['yt', 'https://www.youtube.com/results?search_query={Q}', 'Youtube']
     ]
-
-    // format: [name, url]
-    const quicklinks = [
-      ['Name', 'https://ping.com']
-    ]
-
 
     // helper functions
     const $ = (id) => document.getElementById(id)
@@ -108,7 +105,6 @@
     }
 
     buildHelp = () => {}
-    buildQuicklinks = () => {}
 
     handleQuery = (event, query) => {
       const key = event.keyCode || event.which
@@ -171,7 +167,6 @@
     initSearchBar()
     buildDate()
     buildHelp()
-    buildQuicklinks()
   </script>
 
   <style>
@@ -234,7 +229,7 @@
 
     ul li {
       list-style: none;
-      margin-left: -1.5em;
+      margin-left: -2.5em;
     }
 
     #date {
